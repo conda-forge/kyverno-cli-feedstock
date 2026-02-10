@@ -36,7 +36,7 @@ source:
     file_name: LICENSE
 
 build:
-  number: 0
+  number: 1
   script:
     - cd src
     - >-
@@ -51,8 +51,8 @@ build:
       then: cp -r ../manual_licenses/* ../library_licenses/
       else: xcopy /E /I /Y ..\manual_licenses\* ..\library_licenses\
     - if: unix
-      then: go build -v -o $PREFIX/bin/kyverno -ldflags="-s -w" ./cmd/cli/kubectl-kyverno
-      else: go build -v -o %LIBRARY_BIN%\kyverno.exe -ldflags="-s" ./cmd/cli/kubectl-kyverno
+      then: go build -v -o $PREFIX/bin/kyverno -ldflags="-s -w -X github.com/kyverno/kyverno/pkg/version.BuildVersion=${{ version }}" ./cmd/cli/kubectl-kyverno
+      else: go build -v -o %LIBRARY_BIN%\kyverno.exe -ldflags="-s -w -X github.com/kyverno/kyverno/pkg/version.BuildVersion=${{ version }}" ./cmd/cli/kubectl-kyverno
 
 requirements:
   build:
