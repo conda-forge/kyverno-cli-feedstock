@@ -61,6 +61,11 @@ requirements:
 
 tests:
   - script: kyverno version
+  - if: unix
+    then:
+      script: kyverno version 2>&1 | grep -q "${{ version }}"
+    else:
+      script: kyverno version 2>&1 | findstr "${{ version }}"
   - package_contents:
       bin:
         - kyverno
