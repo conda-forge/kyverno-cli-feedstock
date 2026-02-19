@@ -1,5 +1,5 @@
 context:
-  version: "1.17.0"
+  version: "1.17.1"
 
 package:
   name: kyverno-cli
@@ -7,7 +7,7 @@ package:
 
 source:
   - url: https://github.com/kyverno/kyverno/archive/refs/tags/v${{ version }}.tar.gz
-    sha256: 05afa6e889d360d37da5f3a4fd3c845492ed1879127cbaf54886ea735fec4cb4
+    sha256: 32c7451f768280a8a1199be1b595ccd3847e196da0b04a33076af83d07737e88
     target_directory: src
   # Manually downloaded licenses for dependencies where go-licenses cannot detect the license
   - url: https://raw.githubusercontent.com/cyberphone/json-canonicalization/19d51d7fe467d4706a3ff08adf8a748f29fc21e0/LICENSE
@@ -36,7 +36,7 @@ source:
     file_name: LICENSE
 
 build:
-  number: 1
+  number: 0
   script:
     - cd src
     - >-
@@ -48,12 +48,12 @@ build:
       --ignore github.com/openreports/reports-api
       --ignore github.com/alibabacloud-go/cr-20160607
     - if: unix
-      then: cp -r ../manual_licenses/* ../library_licenses/
-      else: xcopy /E /I /Y ..\manual_licenses\* ..\library_licenses\
-    - if: unix
-      then: go build -v -o $PREFIX/bin/kyverno -ldflags="-s -w -X github.com/kyverno/kyverno/pkg/version.BuildVersion=${{ version }}" ./cmd/cli/kubectl-kyverno
-      else: go build -v -o %LIBRARY_BIN%\kyverno.exe -ldflags="-s -w -X github.com/kyverno/kyverno/pkg/version.BuildVersion=${{ version }}" ./cmd/cli/kubectl-kyverno
-
+      then:
+        - cp -r ../manual_licenses/* ../library_licenses/
+        - go build -v -o $PREFIX/bin/kyverno -ldflags="-s -w -X github.com/kyverno/kyverno/pkg/version.BuildVersion=${{ version }}" ./cmd/cli/kubectl-kyverno
+      else:
+        - xcopy /E /I /Y ..\manual_licenses\* ..\library_licenses\
+        - go build -v -o %LIBRARY_BIN%\kyverno.exe -ldflags="-s -w -X github.com/kyverno/kyverno/pkg/version.BuildVersion=${{ version }}" ./cmd/cli/kubectl-kyverno
 requirements:
   build:
     - ${{ compiler("go-nocgo") }}
