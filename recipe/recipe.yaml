@@ -1,5 +1,5 @@
 context:
-  version: "1.19.2"
+  version: "1.20.0"
 
 package:
   name: kyverno-cli
@@ -7,7 +7,7 @@ package:
 
 source:
   - url: https://github.com/kyverno/kyverno/archive/refs/tags/v${{ version }}.tar.gz
-    sha256: 9c09a8cf176357852aaf9b81df0c609099ba72d6591b9e2148984a5b8cfe1dda
+    sha256: 03285a7ed3f24ee99d62b5e00829441627219f9f81702e4c8adef741c1d83707
     target_directory: src
   # Manually downloaded licenses for dependencies where go-licenses cannot detect the license
   - url: https://raw.githubusercontent.com/cyberphone/json-canonicalization/19d51d7fe467d4706a3ff08adf8a748f29fc21e0/LICENSE
